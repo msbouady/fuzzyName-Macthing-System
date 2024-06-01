@@ -1,0 +1,17 @@
+{
+  "name": "1",
+  "version": "1.0.0",
+  "description": "convertir",
+  "main": "converter.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "daniel",
+  "license": "ISC",
+  "dependencies": {
+    "fs": "^0.0.1-security",
+    "fuzzyset.js": "^1.0.7",
+    "xlsx": "^0.18.5"
+  }
+}
