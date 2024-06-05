@@ -1,6 +1,13 @@
 import xlsx from 'xlsx';
 import FuzzySet from 'fuzzyset.js';
 import path from 'path';
+import dotenv from 'dotenv';
+
+dotenv.config()
+
+const SORTANT = process.env.SORTANT;
+const ENTRANT = process.env.ENTRANT;
+const ADMIS = process.env.ADMIS;
 
 // Fonction pour nettoyer les noms
 function nettoyerNom(nom) {
@@ -27,10 +34,11 @@ function comparerNoms(nom, fuzzySet) {
     }
     return bestScore >= 0.7 ? bestMatch : null;
 }
-
+const path1 = process.env.FILES_1
+const path2 =process.env.FILES_2
 // Chemins des fichiers Excel
-const filePath1 = path.resolve('C:\\Users\\M\\Downloads\\SS\\SS 1.xlsx');
-const filePath2 = path.resolve('C:\\Users\\M\\Downloads\\SS\\SS 2.xlsx');
+const filePath1 = path.resolve(path1);
+const filePath2 = path.resolve(path2);
 
 // Charger les fichiers Excel
 const workbook1 = xlsx.readFile(filePath1);
@@ -53,8 +61,8 @@ let fuzzySet1 = FuzzySet(ncomplet_ss1);
 let fuzzySet2 = FuzzySet(ncomplet_ss2);
 
 // Ajouter l'état au JSON
-ss1.forEach(row => row.etat = 'sortant');
-ss2.forEach(row => row.etat = 'entrant');
+ss1.forEach(row => row.etat = SORTANT);
+ss2.forEach(row => row.etat = ENTRANT);
 
 // Associer les colonnes et ajouter l'état
 ss1.forEach((row1, index1) => {
@@ -62,8 +70,8 @@ ss1.forEach((row1, index1) => {
     if (match) {
         let matchedRowIndex = ss2.findIndex(row2 => nettoyerNom(row2.ncomplet).includes(match[1]));
         if (matchedRowIndex !== -1) {
-            ss1[index1] = { ...row1, ...ss2[matchedRowIndex], etat: 'admis' };
-            ss2[matchedRowIndex].etat = 'admis';
+            ss1[index1] = { ...row1, ...ss2[matchedRowIndex], etat: ADMIS };
+            ss2[matchedRowIndex].etat = ADMIS;
         }
     }
 });
@@ -73,8 +81,8 @@ ss2.forEach((row2, index2) => {
     if (match) {
         let matchedRowIndex = ss1.findIndex(row1 => nettoyerNom(row1.ncomplet).includes(match[1]));
         if (matchedRowIndex !== -1) {
-            ss2[index2] = { ...row2, ...ss1[matchedRowIndex], etat: 'admis' };
-            ss1[matchedRowIndex].etat = 'admis';
+            ss2[index2] = { ...row2, ...ss1[matchedRowIndex], etat: ADMIS };
+            ss1[matchedRowIndex].etat = ADMIS;
         }
     }
 });
@@ -91,5 +99,5 @@ xlsx.utils.book_append_sheet(newWorkbook1, newSheet1, 'Sheet1');
 xlsx.utils.book_append_sheet(newWorkbook2, newSheet2, 'Sheet1');
 
 // Sauvegarder les nouveaux fichiers Excel
-xlsx.writeFile(newWorkbook1, 'SS1_etat.xlsx');
-xlsx.writeFile(newWorkbook2, 'SS2_etat.xlsx');
+xlsx.writeFile(newWorkbook1, 'fichierSortant.xlsx');
+xlsx.writeFile(newWorkbook2, 'fichierEntrant.xlsx');
