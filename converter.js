@@ -71,7 +71,7 @@ ss1.forEach((row1, index1) => {
         let matchedRowIndex = ss2.findIndex(row2 => nettoyerNom(row2.ncomplet).includes(match[1]));
         if (matchedRowIndex !== -1) {
             ss1[index1] = { ...row1, ...ss2[matchedRowIndex], etat: ADMIS };
-            ss2[matchedRowIndex].etat = ADMIS;
+            ss2[matchedRowIndex].etat = process.env.ADMIS;
         }
     }
 });
@@ -81,8 +81,8 @@ ss2.forEach((row2, index2) => {
     if (match) {
         let matchedRowIndex = ss1.findIndex(row1 => nettoyerNom(row1.ncomplet).includes(match[1]));
         if (matchedRowIndex !== -1) {
-            ss2[index2] = { ...row2, ...ss1[matchedRowIndex], etat: ADMIS };
-            ss1[matchedRowIndex].etat = ADMIS;
+            ss2[index2] = { ...row2, ...ss1[matchedRowIndex], etat: process.env.ADMIS };
+            ss1[matchedRowIndex].etat = process.env.ADMIS;
         }
     }
 });
