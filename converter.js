@@ -32,7 +32,7 @@ function comparerNoms(nom, fuzzySet) {
             bestMatch = matches[0];
         }
     }
-    return bestScore >= 0.7 ? bestMatch : null;
+    return bestScore >= 0.6 ? bestMatch : null; // for more prediction
 }
 const path1 = process.env.FILES_1
 const path2 =process.env.FILES_2
